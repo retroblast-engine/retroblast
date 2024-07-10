@@ -37,7 +37,9 @@ jobs:
       uses: golangci/golangci-lint-action@v6
       with:
         version: latest
-        args: --issues-exit-code=0 --timeout=5m
+        skip-pkg-cache: true
+        skip-build-cache: true
+        args: --config=./.golangci.yml --verbose --issues-exit-code=0 --timeout=5m
 
     - name: Run tests
       run: go test ./... -v
