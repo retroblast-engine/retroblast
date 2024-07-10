@@ -7,5 +7,5 @@
 5. Write the code.
 6. Install [act](https://github.com/nektos/act) and run the tests: `act -j test` and the linter `act -j lint`.
 7. If they pass, then `git commit` and `git push` to your fork remote against your branch.
-8. Now you can create a pull-request from your fork remote to the original upstream project against the `master` branch.
+8. Now you can create a pull-request from your fork remote to the original upstream project against the `main` branch.
 
