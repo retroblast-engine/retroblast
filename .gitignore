@@ -1,6 +1,18 @@
 # Created by https://www.toptal.com/developers/gitignore/api/macos,linux,windows,goland,visualstudiocode,go,vim,emacs
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,linux,windows,goland,visualstudiocode,go,vim,emacs
 
+### mkdocs ###
+site
+
+### Python Env ###
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
 ### Emacs ###
 # -*- mode: gitignore; -*-
 *~

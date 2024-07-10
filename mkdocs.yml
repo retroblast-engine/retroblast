@@ -3,19 +3,13 @@ site_description: 'Documentation for RetroBlast'
 site_url: https://retroblast-engine.github.io/retroblast/
 repo_url: https://github.com/retroblast-engine/retroblast
 theme:
-  name: readthedocs
-  locale: en
-  highlightjs: True
-  hljs_languages:
-    - yaml
-    - go
+  name: material
 
 markdown_extensions:
-  - smarty
   - toc:
       permalink: True
       separator: "_"
-  - sane_lists
+
 nav:
   - Home: index.md
   - Contributing: contributing.md
