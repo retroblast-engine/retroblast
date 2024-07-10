@@ -1,0 +1,13 @@
+site_name: RetroBlast
+site_description: 'Documentation for RetroBlast'
+site_url: https://retroblast-engine.github.io/retroblast/
+repo_url: https://github.com/retroblast-engine/retroblast
+theme:
+  name: material
+markdown_extensions:
+    - toc:
+        permalink: True
+        separator: "_"
+nav:
+  - Home: index.md
+  - Contributing: contributing.md
