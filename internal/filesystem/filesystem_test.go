@@ -1,57 +1,64 @@
 package filesystem
 
 import (
+	"strings"
 	"testing"
 )
 
+// TestCreateAndDeleteSuccessScenario tests successful creation and deletion of a file.
 func TestCreateAndDeleteSuccessScenario(t *testing.T) {
-	err := CreateFile("testdata/testcreateanddeletescenario.txt")
-
+	filePath := "testdata/testcreateanddeletescenario.txt"
+	err := CreateFile(filePath)
 	if err != nil {
-		t.Fatalf(`CreateFile("testdata/testcreateanddeletescenario.txt") returned %v , error`, err)
+		t.Fatalf(`CreateFile(%q) returned error: %v`, filePath, err)
 	}
 
-	err = DeleteFile("testdata/testcreateanddeletescenario.txt")
-
+	err = DeleteFile(filePath)
 	if err != nil {
-		t.Fatalf(`DeleteFile("testdata/testcreateanddeletescenario.txt") returned %v , error`, err)
+		t.Fatalf(`DeleteFile(%q) returned error: %v`, filePath, err)
 	}
-
 }
 
-// TestCreateFileEmpty calls filesystem.CreateFile with an empty string,
-// checking for an error.
+// TestCreateFileEmpty tests CreateFile with an empty string.
 func TestCreateFileEmpty(t *testing.T) {
 	err := CreateFile("")
 	if err == nil {
-		t.Fatalf(`CreateFile("") returned %v , error`, err)
+		t.Fatalf(`CreateFile("") returned no error, expected error`)
+	} else {
+		t.Logf(`CreateFile("") returned expected error: %v`, err)
 	}
 }
 
-// TestCreateFileEmpty calls filesystem.CreateFile with an a filepath to a file that already exists
-// checking for an error
+// TestCreateFileAlreadyExists tests CreateFile with a file that already exists.
 func TestCreateFileAlreadyExists(t *testing.T) {
-	err := CreateFile("testdata/test_file_do_not_delete.txt")
+	filePath := "testdata/test_file_do_not_delete.txt"
+	err := CreateFile(filePath)
 	if err == nil {
-		t.Fatalf(`CreateFile("testdata/test_file_do_not_delete.txt") returned %v , error`, err)
+		t.Fatalf(`CreateFile(%q) returned no error, expected error`, filePath)
+	} else {
+		t.Logf(`CreateFile(%q) returned expected error: %v`, filePath, err)
 	}
 }
 
-// TestDeleteFileEmpty calls filesystem.DeleteFile with an empty string,
-// checking for an error.
+// TestDeleteFileEmpty tests DeleteFile with an empty string.
 func TestDeleteFileEmpty(t *testing.T) {
 	err := DeleteFile("")
 	if err == nil {
-		t.Fatalf(`DeleteFile("") returned %v , error`, err)
+		t.Fatalf(`DeleteFile("") returned no error, expected error`)
+	} else {
+		t.Logf(`DeleteFile("") returned expected error: %v`, err)
 	}
 }
 
-// TestDeleteFileEmpty calls filesystem.DeleteFile with an empty string,
-// checking for an error.
+// TestDeleteFileNotExisting tests DeleteFile with a non-existing file.
 func TestDeleteFileNotExisting(t *testing.T) {
 	err := DeleteFile("dummydummy123456789.txt")
-
 	if err == nil {
-		t.Fatalf(`DeleteFile("dummydummy123456789.txt") returned %v , error`, err)
+		t.Fatalf(`DeleteFile("dummydummy123456789.txt") returned no error, expected error`)
+	} else if strings.Contains(err.Error(), "no such file or directory") || strings.Contains(err.Error(), "The system cannot find the file specified") {
+		// Expected error
+		t.Logf(`DeleteFile("dummydummy123456789.txt") returned expected error: %v`, err)
+	} else {
+		t.Fatalf(`DeleteFile("dummydummy123456789.txt") returned unexpected error: %v`, err)
 	}
 }
