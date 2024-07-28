@@ -61,7 +61,7 @@ func DeleteFile(filePath string) error {
 
 	if err != nil {
 		// Handle the error appropriately
-		return fmt.Errorf("Failed to delete file %s: %w", filePath, err)
+		return fmt.Errorf("failed to delete file %s: %w", filePath, err)
 	}
 
 	return nil
