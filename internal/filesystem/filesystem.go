@@ -12,7 +12,7 @@ func fileOrDirExists(path string) (bool, error) {
 		if os.IsNotExist(err) {
 			return false, nil
 		} else {
-			return false, fmt.Errorf("Failed to check if file or directory exists: %w", err)
+			return false, fmt.Errorf("failed to check if file or directory exists: %w", err)
 		}
 	} else {
 		return true, nil
@@ -26,7 +26,7 @@ func isDirectory(path string) (bool, error) {
 	fileInfo, err := os.Stat(path)
 
 	if err != nil {
-		return false, fmt.Errorf("Failed to stat path %s: %w", path, err)
+		return false, fmt.Errorf("failed to stat path %s: %w", path, err)
 	}
 
 	return fileInfo.IsDir(), err
@@ -36,19 +36,19 @@ func CreateFile(path string) (err error) {
 
 	exists, err := fileOrDirExists(path)
 	if err != nil {
-		return fmt.Errorf("Failed to check if file or directory exists: %w", err)
+		return fmt.Errorf("failed to check if file or directory exists: %w", err)
 	}
 	if exists {
-		return errors.New("File or directory already exists at path: " + path)
+		return errors.New("file or directory already exists at path: " + path)
 	}
 
 	file, err := os.Create(path)
 	if err != nil {
-		return fmt.Errorf("Failed to create file: %w", err)
+		return fmt.Errorf("failed to create file: %w", err)
 	}
 	defer func() {
 		if cerr := file.Close(); cerr != nil && err == nil {
-			err = fmt.Errorf("Failed to close file: %w", cerr)
+			err = fmt.Errorf("failed to close file: %w", cerr)
 		}
 	}()
 
