@@ -1,3 +1,4 @@
+// Package filesystem provides basic file operations required by the engine
 package filesystem
 
 import (
@@ -10,27 +11,15 @@ func fileOrDirExists(path string) (bool, error) {
 	if _, err := os.Stat(path); err != nil {
 		if os.IsNotExist(err) {
 			return false, nil
-		} else {
-			return false, fmt.Errorf("fileOrDirExists: failed to check if file or directory exists at %s: %w", path, err)
 		}
-	} else {
-		return true, nil
+		return false, fmt.Errorf("fileOrDirExists: failed to check if file or directory exists at %s: %w", path, err)
 	}
+
+	return true, nil
 
 }
 
-// isDirectory determines if a file represented
-// by `path` is a directory or not
-func isDirectory(path string) (bool, error) {
-	fileInfo, err := os.Stat(path)
-
-	if err != nil {
-		return false, fmt.Errorf("isDirectory: failed to stat path %s: %w", path, err)
-	}
-
-	return fileInfo.IsDir(), err
-}
-
+// CreateFile creates a new file at the given `path` argument
 func CreateFile(path string) (err error) {
 
 	exists, err := fileOrDirExists(path)
@@ -55,6 +44,7 @@ func CreateFile(path string) (err error) {
 
 }
 
+// DeleteFile deletes the file presented by the given `path` argument, provided it exists
 func DeleteFile(filePath string) error {
 	err := os.Remove(filePath)
 

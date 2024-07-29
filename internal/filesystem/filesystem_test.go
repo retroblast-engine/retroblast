@@ -31,9 +31,13 @@ func ExampleDeleteFile() {
 	filePath := "testdata/example_deletefile.txt"
 
 	// Create a file to delete
-	file, err := os.Create(filePath)
+	file, _ := os.Create(filePath)
 
-	file.Close()
+	err := file.Close()
+
+	if err != nil {
+		fmt.Println("Failed to close file at ExampleDeleteFile invocation")
+	}
 
 	// Delete the file
 	err = DeleteFile(filePath)
@@ -97,10 +101,12 @@ func TestDeleteFileNotExisting(t *testing.T) {
 	err := DeleteFile("dummydummy123456789.txt")
 	if err == nil {
 		t.Fatalf(`DeleteFile("dummydummy123456789.txt") returned no error, expected an error`)
-	} else if strings.Contains(err.Error(), "no such file or directory") || strings.Contains(err.Error(), "The system cannot find the file specified") {
-		// Expected error
-		t.Logf(`DeleteFile("dummydummy123456789.txt") returned expected error: %v`, err)
 	} else {
-		t.Fatalf(`DeleteFile("dummydummy123456789.txt") returned unexpected error: %v`, err)
+		if strings.Contains(err.Error(), "no such file or directory") || strings.Contains(err.Error(), "The system cannot find the file specified") {
+			// Expected error
+			t.Logf(`DeleteFile("dummydummy123456789.txt") returned expected error: %v`, err)
+		} else {
+			t.Fatalf(`DeleteFile("dummydummy123456789.txt") returned unexpected error: %v`, err)
+		}
 	}
 }
