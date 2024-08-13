@@ -12,6 +12,7 @@ import (
 )
 
 type BuildInfo struct {
+	Version    string
 	Commit     string
 	CommitTime string
 	GoVersion  string
@@ -20,33 +21,39 @@ type BuildInfo struct {
 	Modified   bool
 }
 
-var Version = "dev"
+var buildInfo BuildInfo
 
-// versionCmd represents the version command
-var versionCmd = &cobra.Command{
-	Use:   "version",
-	Short: "Show version and exit",
-	Long:  ``,
+// VersionCommand represents the version command
+func VersionCommand() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "version",
+		Short: "Show version and build information",
+		Long:  ``,
 
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) > 0 {
-			fmt.Print("command not found\n\n")
-			cmd.Help()
-		} else {
+		Run: func(cmd *cobra.Command, args []string) {
+			if len(args) > 0 {
+				fmt.Print("command not found\n\n")
+				cmd.Help()
+			} else {
 
-			// Print Version
-			// fmt.Printf("retroblast version: \"%s\", commit: \"%s\", go version: \"%s\", GOOS: \"%s\", GOARCH: \"%s\" \n",
-			//Version, Commit, runtime.Version(), runtime.GOOS, runtime.GOARCH)
-			buildInfo := GetBuildInfo()
+				buildInfo := CreateBuildInfo()
 
-			fmt.Printf("%s\n", buildInfo)
-		}
-	},
+				fmt.Fprintf(cmd.OutOrStdout(), "%s\n", buildInfo)
+
+			}
+		},
+	}
+
+	return cmd
 }
 
-func GetBuildInfo() BuildInfo {
+// Retrieve build information, such as Version, CommitHash, goVersion, Goos, Goarch
+func CreateBuildInfo() BuildInfo {
 
-	buildInfo := BuildInfo{}
+	buildInfo = BuildInfo{}
+
+	// The version is currently labeled "dev" because the engine is still under development
+	buildInfo.Version = "dev"
 
 	info, ok := debug.ReadBuildInfo()
 	if !ok {
@@ -71,23 +78,19 @@ func GetBuildInfo() BuildInfo {
 	return buildInfo
 }
 
+func GetBuildInfo() BuildInfo {
+	return buildInfo
+}
+
 func (i BuildInfo) String() string {
 
 	return fmt.Sprintf("retroblast version: \"%s\", commit: \"%s\", go version: \"%s\", GOOS: \"%s\", GOARCH: \"%s\" \n",
-		Version, i.Commit, i.GoVersion, i.Goos, i.Goarch)
+		i.Version, i.Commit, i.GoVersion, i.Goos, i.Goarch)
 
 }
 
 func init() {
-	rootCmd.AddCommand(versionCmd)
 
-	// Here you will define your flags and configuration settings.
+	// Flags and Configuration Settings should be defined here
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// versionCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// versionCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
