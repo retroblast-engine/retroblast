@@ -1,16 +1,16 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
 	"fmt"
+	"log"
 	"runtime"
 	"runtime/debug"
 
 	"github.com/spf13/cobra"
 )
 
+// BuildInfo holds information about the build, including the version,
+// commit hash, and the time when the build was created.
 type BuildInfo struct {
 	Version    string
 	Commit     string
@@ -33,12 +33,19 @@ func VersionCommand() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			if len(args) > 0 {
 				fmt.Print("command not found\n\n")
-				cmd.Help()
+
+				error := cmd.Help()
+				if error != nil {
+					log.Printf("Failed to display help: %v", error)
+				}
 			} else {
 
 				buildInfo := CreateBuildInfo()
 
-				fmt.Fprintf(cmd.OutOrStdout(), "%s\n", buildInfo)
+				_, err := fmt.Fprintf(cmd.OutOrStdout(), "%s\n", buildInfo)
+				if err != nil {
+					log.Printf("Failed to write Build Information: %v", err)
+				}
 
 			}
 		},
@@ -47,7 +54,7 @@ func VersionCommand() *cobra.Command {
 	return cmd
 }
 
-// Retrieve build information, such as Version, CommitHash, goVersion, Goos, Goarch
+// CreateBuildInfo retrieves build information, such as Version, CommitHash, goVersion, Goos, Goarch
 func CreateBuildInfo() BuildInfo {
 
 	buildInfo = BuildInfo{}
@@ -75,10 +82,6 @@ func CreateBuildInfo() BuildInfo {
 		}
 	}
 
-	return buildInfo
-}
-
-func GetBuildInfo() BuildInfo {
 	return buildInfo
 }
 

@@ -1,10 +1,8 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -25,9 +23,16 @@ func RootCommand() *cobra.Command {
 		Use:   "retroblast",
 		Short: "A retro 2D game engine using Go",
 		Long:  "",
-		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Fprintf(cmd.OutOrStdout(), asciiArt+"\n")
-			cmd.Help()
+		Run: func(cmd *cobra.Command, _ []string) {
+			_, err := fmt.Fprintf(cmd.OutOrStdout(), asciiArt+"\n")
+			if err != nil {
+				log.Printf("Failed to write ASCII art: %v", err)
+			}
+
+			error := cmd.Help()
+			if error != nil {
+				log.Printf("Failed to display help: %v", error)
+			}
 		},
 	}
 
@@ -36,6 +41,7 @@ func RootCommand() *cobra.Command {
 	return cmd
 }
 
+// Execute adds all child commands to the root command and sets flags appropriately.
 func Execute() {
 	err := RootCommand().Execute()
 	if err != nil {

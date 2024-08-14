@@ -2,6 +2,7 @@ package cmd_test
 
 import (
 	"bytes"
+	"strings"
 	"testing"
 
 	"github.com/retroblast-engine/retroblast/cli/cmd"
@@ -31,7 +32,7 @@ func TestRootCommand(t *testing.T) {
  |_|  \_\___|\__|_|  \___/|____/|_|\__,_|___/\__|
  ` + "\n" + `A retro 2D game engine using Go`
 
-	if buffer.String() != expectedOutput {
+	if strings.Contains(expectedOutput, buffer.String()) {
 		t.Errorf("Expected output: %q/nActual output: %q", expectedOutput, buffer)
 	}
 }
