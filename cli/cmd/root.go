@@ -1,3 +1,5 @@
+// Package cmd provides the command-line interface for the application,
+// including the root command and its associated subcommands.
 package cmd
 
 import (
@@ -29,9 +31,9 @@ func RootCommand() *cobra.Command {
 				log.Printf("Failed to write ASCII art: %v", err)
 			}
 
-			error := cmd.Help()
-			if error != nil {
-				log.Printf("Failed to display help: %v", error)
+			er := cmd.Help()
+			if er != nil {
+				log.Printf("Failed to display help: %v", er)
 			}
 		},
 	}

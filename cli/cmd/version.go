@@ -1,3 +1,5 @@
+// Package cmd provides the command-line interface for the application,
+// including the root command and its associated subcommands.
 package cmd
 
 import (
@@ -34,9 +36,9 @@ func VersionCommand() *cobra.Command {
 			if len(args) > 0 {
 				fmt.Print("command not found\n\n")
 
-				error := cmd.Help()
-				if error != nil {
-					log.Printf("Failed to display help: %v", error)
+				err := cmd.Help()
+				if err != nil {
+					log.Printf("Failed to display help: %v", err)
 				}
 			} else {
 
@@ -71,6 +73,8 @@ func CreateBuildInfo() BuildInfo {
 	buildInfo.Goos = runtime.GOOS
 	buildInfo.Goarch = runtime.GOARCH
 
+	// Iterate over the settings in the info object and update the buildInfo
+	// struct based on specific keys.
 	for _, setting := range info.Settings {
 		switch setting.Key {
 		case "vcs.revision":
