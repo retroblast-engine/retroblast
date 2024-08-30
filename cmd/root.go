@@ -25,7 +25,10 @@ func RootCommand() *cobra.Command {
 		Run: func(cmd *cobra.Command, _ []string) {
 			cmd.Println(asciiArt)
 
-			cmd.Help()
+			err := cmd.Help()
+			if err != nil {
+				cmd.Println("Error displaying help:", err)
+			}
 		},
 	}
 

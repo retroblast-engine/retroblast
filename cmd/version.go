@@ -32,7 +32,7 @@ func VersionCommand() *cobra.Command {
 		Short: "Show version and build information",
 		Long:  "Displays detailed information about the current build of the application.",
 		Args:  cobra.NoArgs, // No arguments are allowed
-		Run: func(cmd *cobra.Command, args []string) {
+		Run: func(cmd *cobra.Command, _ []string) {
 			// Print build information
 			cmd.Println(CreateBuildInfo().String())
 		},
