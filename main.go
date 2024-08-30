@@ -1,10 +1,8 @@
 // main package is the entry point of the program
 package main
 
-import (
-	"fmt"
-)
+import "github.com/retroblast-engine/retroblast/cmd"
 
 func main() {
-	fmt.Println("Hello, World!")
+	cmd.Execute()
 }
