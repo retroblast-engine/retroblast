@@ -17,19 +17,6 @@ var (
 	directoryThatAlreadyExists   = "testdata"
 )
 
-// Helper function to create a test file.
-func createTestFile(t *testing.T, filePath string) {
-	file, err := os.Create(filePath)
-	if err != nil {
-		t.Fatalf("Failed to create test file %q: %v", filePath, err)
-	}
-	defer func() {
-		if err := file.Close(); err != nil {
-			t.Errorf("Failed to close file %q: %v", filePath, err)
-		}
-	}()
-}
-
 // Helper function to remove a test file.
 func removeTestFile(t *testing.T, filePath string) {
 	err := os.Remove(filePath)
