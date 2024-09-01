@@ -113,8 +113,6 @@ func TestCreateFileEmpty(t *testing.T) {
 // TestCreateFileAlreadyExists tests CreateFile with a file that already exists.
 func TestCreateFileAlreadyExists(t *testing.T) {
 	filePath := fileThatAlreadyExists
-	createTestFile(t, filePath)
-	defer removeTestFile(t, filePath)
 
 	err := CreateFile(filePath)
 	if err == nil {
