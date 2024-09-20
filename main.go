@@ -3,8 +3,11 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/retroblast-engine/retroblast/cmd"
 )
 
 func main() {
 	fmt.Println("Hello!")
+	cmd.Execute()
 }
