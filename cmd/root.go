@@ -31,6 +31,7 @@ func RootCommand() *cobra.Command {
 	}
 
 	cmd.AddCommand(VersionCommand())
+	cmd.AddCommand(GenerateCommand())
 
 	return cmd
 }
