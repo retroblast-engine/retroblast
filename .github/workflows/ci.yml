@@ -30,6 +30,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-go-
     
+    - name: Set up xvfb
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb
+        export DISPLAY=:99.0
+        Xvfb :99 -screen 0 1024x768x24 &
+    
     - name: Install dependencies
       run: sudo apt-get update && sudo apt-get install -y libc6-dev libgl1-mesa-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev libasound2-dev pkg-config
 
