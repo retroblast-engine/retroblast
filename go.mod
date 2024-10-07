@@ -5,7 +5,7 @@ go 1.22.4
 require (
 	github.com/retroblast-engine/asevre v0.0.0-20240906013955-7261674eefed
 	github.com/spf13/cobra v1.8.1
-	golang.org/x/text v0.18.0
+	golang.org/x/text v0.19.0
 )
 
 require (
