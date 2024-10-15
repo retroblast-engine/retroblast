@@ -3,6 +3,9 @@ package cmd
 import (
 	"fmt"
 	"strings"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 func generateEntityGo(importPath string, entities []string) string {
@@ -15,7 +18,11 @@ func generateEntityGo(importPath string, entities []string) string {
 	// Generate the EntityConstructors map entries
 	var entityConstructors strings.Builder
 	for _, entity := range entities {
-		entityConstructors.WriteString(fmt.Sprintf("\t\"%s\": func(x, y float64, assetPath string) (Entity, error) {\n\t\treturn %s.New%s(x, y, assetPath)\n\t},\n", entity, entity, strings.Title(entity)))
+		c := cases.Title(language.Und)
+		entityConstructors.WriteString(fmt.Sprintf(
+			"\t\"%s\": func(x, y float64, assetPath string) (Entity, error) {\n\t\treturn %s.New%s(x, y, assetPath)\n\t},\n",
+			entity, entity, c.String(entity),
+		))
 	}
 
 	return fmt.Sprintf(`package entities

@@ -3,13 +3,17 @@ package cmd
 import (
 	"fmt"
 	"strings"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 func generateCharacterGo(importPath, entityName, defaultState string) string {
 	// Convert the entity name to lowercase for the package name and comments
 	lowerEntityName := strings.ToLower(entityName)
 	// Convert the entity name to title case for the struct name
-	titleEntityName := strings.Title(entityName)
+	c := cases.Title(language.Und)
+	titleEntityName := c.String(entityName)
 	// Get the first letter of the entity name in lowercase for the receiver
 	receiver := strings.ToLower(string(entityName[0]))
 

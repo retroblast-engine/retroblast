@@ -383,7 +383,8 @@ func runGenerateCommand(_ *cobra.Command, _ []string) error {
 		// Make sure it exists
 		if _, err := os.Stat(file); os.IsNotExist(err) {
 			// Try if the file is Tiled file (so first letter is capital)
-			file = filepath.Join("assets/aseprite", strings.Title(character)+".aseprite")
+			c := cases.Title(language.Und)
+			file = filepath.Join("assets/aseprite", c.String(character)+".aseprite")
 			if _, err := os.Stat(file); os.IsNotExist(err) {
 				// Try if the file is all lowercase
 				file = filepath.Join("assets/aseprite", strings.ToLower(character)+".aseprite")
@@ -404,12 +405,13 @@ func runGenerateCommand(_ *cobra.Command, _ []string) error {
 			log.Fatal("No states found in the aseprite file")
 		}
 
+		c := cases.Title(language.Und)
 		statesString += "const (\n"
 		for i, state := range states {
 			if i == 0 {
-				statesString += fmt.Sprintf("\t%s State = iota\n", strings.Title(state.Name))
+				statesString += fmt.Sprintf("\t%s State = iota\n", c.String(state.Name))
 			} else {
-				statesString += fmt.Sprintf("\t%s\n", strings.Title(state.Name))
+				statesString += fmt.Sprintf("\t%s\n", c.String(state.Name))
 			}
 		}
 		statesString += ")\n"
@@ -424,9 +426,9 @@ func runGenerateCommand(_ *cobra.Command, _ []string) error {
 		playerGoFile := filepath.Join(characterDir, character+".go")
 		var entityGoContent string
 		if character == "player" {
-			entityGoContent = generatePlayerGo(importPath, character, strings.Title(defautState.Name))
+			entityGoContent = generatePlayerGo(importPath, character, c.String(defautState.Name))
 		} else {
-			entityGoContent = generateCharacterGo(importPath, character, strings.Title((defautState.Name)))
+			entityGoContent = generateCharacterGo(importPath, character, c.String(defautState.Name))
 		}
 		if err := os.WriteFile(playerGoFile, []byte(entityGoContent), 0644); err != nil {
 			log.Fatal(err)
