@@ -593,7 +593,8 @@ func processTMXFiles(tmxFiles []string, tiledPath, asepritePath string) ([][]Ent
 		// Load the tiled map using the temporary fs.FS
 		tiledMap, err := maploader.Load(fs, tmxFile, tiledPath, asepritePath, minCellSize, minCellSize)
 		if err != nil {
-			log.Fatalf("Failed to load map: %v", err)
+			log.Printf("Failed to load map: %v", err)
+			return allEntities, err
 		}
 
 		// Process object layers to extract entities
@@ -614,7 +615,8 @@ func processTMXFiles(tmxFiles []string, tiledPath, asepritePath string) ([][]Ent
 
 	// delete the tmp folder
 	if err := os.RemoveAll(tmpFolder); err != nil {
-		log.Fatalf("Error removing directory: %v", err)
+		log.Printf("Error removing directory: %v", err)
+		return allEntities, err
 	}
 
 	return allEntities, nil
