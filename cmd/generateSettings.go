@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func generateSettingsGo(MinCellSize, maxCellSize int, sceneFiles []string, gameTitle string) string {
+func generateSettingsGo(minCellSize, maxCellSize int, sceneFiles []string, gameTitle string) string {
 	// Generate the scene variables
 	var sceneVars strings.Builder
 	for i, filepath := range sceneFiles {
@@ -51,5 +51,5 @@ func SetEmbeddedFiles(fs embed.FS) {
 
 var AssetsTiledPath string = "assets/tiled/"
 var AssetsAsepritePath string = "assets/aseprite/"
-`, gameTitle, maxCellSize, MinCellSize) + sceneVars.String()
+`, gameTitle, maxCellSize, minCellSize) + sceneVars.String()
 }
