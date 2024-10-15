@@ -36,7 +36,7 @@ func GenerateCommand() *cobra.Command {
 }
 
 // runGenerateCommand is the function that runs when the generate command is called
-func runGenerateCommand(_ *cobra.Command, _ []string) error {
+func runGenerateCommand(_ *cobra.Command, _ []string) error { // nolint: gocyclo
 
 	// Get Git import paths using the Git configuration
 	// ------------------------------------------------------------------------------------------------------------ //
@@ -403,6 +403,7 @@ func runGenerateCommand(_ *cobra.Command, _ []string) error {
 
 		c := cases.Title(language.Und)
 		statesString += "const (\n"
+		// nolint: gocritic
 		for i, state := range states {
 			if i == 0 {
 				statesString += fmt.Sprintf("\t%s State = iota\n", c.String(state.Name))
