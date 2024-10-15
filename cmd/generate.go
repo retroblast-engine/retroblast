@@ -621,20 +621,28 @@ func processTMXFiles(tmxFiles []string, tiledPath, asepritePath string) ([][]Ent
 }
 
 // copyFile copies a file from src to dst, preserving its permissions.
-func copyFile(src string, dst string, info os.FileInfo) error {
+func copyFile(src string, dst string, info os.FileInfo) (err error) {
 	// Open the source file for reading.
 	srcFile, err := os.Open(src)
 	if err != nil {
 		return fmt.Errorf("failed to open source file %s: %v", src, err)
 	}
-	defer srcFile.Close()
+	defer func() {
+		if cerr := srcFile.Close(); cerr != nil && err == nil {
+			err = fmt.Errorf("failed to close source file %s: %v", src, cerr)
+		}
+	}()
 
 	// Create the destination file for writing.
 	dstFile, err := os.Create(dst)
 	if err != nil {
 		return fmt.Errorf("failed to create destination file %s: %v", dst, err)
 	}
-	defer dstFile.Close()
+	defer func() {
+		if cerr := dstFile.Close(); cerr != nil && err == nil {
+			err = fmt.Errorf("failed to close destination file %s: %v", dst, cerr)
+		}
+	}()
 
 	// Copy the contents of the source file to the destination file.
 	_, err = io.Copy(dstFile, srcFile)
