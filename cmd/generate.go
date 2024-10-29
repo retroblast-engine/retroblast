@@ -69,6 +69,7 @@ func runGenerateCommand(_ *cobra.Command, _ []string) error { // nolint: gocyclo
 	// Generate game.go
 	// ------------------------------------------------------------------------------------------------------------ //
 	gameGoFile := "game.go"
+	importPath = strings.TrimRight(importPath, "\n")
 	gameGoContent := generateGameGo(importPath)
 	if err := os.WriteFile(gameGoFile, []byte(gameGoContent), 0644); err != nil {
 		log.Fatal(err)
