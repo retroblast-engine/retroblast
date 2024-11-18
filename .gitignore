@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/macos,linux,windows,goland,visualstudiocode,go,vim,emacs
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,linux,windows,goland,visualstudiocode,go,vim,emacs
 
+### binaries ###
+retroblast
+
 ### mkdocs ###
 site
 
