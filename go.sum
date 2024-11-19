@@ -21,6 +21,8 @@ github.com/retroblast-engine/asevre v0.0.0-20240906013955-7261674eefed h1:td1ITm
 github.com/retroblast-engine/asevre v0.0.0-20240906013955-7261674eefed/go.mod h1:IUSTyaIhaHreJzOAuPoQZzwXVmoTup/70OP10JlZ/v0=
 github.com/retroblast-engine/tilesre v0.0.0-20241014165603-d2899ee499af h1:n1LfSQpYHImQGEobKnEIaV1P0Bapg82/KRywQzpQPPU=
 github.com/retroblast-engine/tilesre v0.0.0-20241014165603-d2899ee499af/go.mod h1:W1jter0HXwYMqh7V7vte8UJCGW/E7x6n/c1SVLVE8Qo=
+github.com/retroblast-engine/tilesre v0.0.0-20241119171811-66222f445ba1 h1:Zr6U9UnxSPiNCGGukOkIghCssMgx03Wn6Fnys38PSuE=
+github.com/retroblast-engine/tilesre v0.0.0-20241119171811-66222f445ba1/go.mod h1:W1jter0HXwYMqh7V7vte8UJCGW/E7x6n/c1SVLVE8Qo=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/solarlune/resolv v0.7.0 h1:xppOLy3hRy9AB5khJVVUlwiWdFZGSLwAOODAoZ6508A=
 github.com/solarlune/resolv v0.7.0/go.mod h1:rUQ1j+RndaUwwrSgl585tAp2uu7Zj7TG5mXq+x6hX/w=

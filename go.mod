@@ -4,7 +4,7 @@ go 1.22.4
 
 require (
 	github.com/retroblast-engine/asevre v0.0.0-20240906013955-7261674eefed
-	github.com/retroblast-engine/tilesre v0.0.0-20241014165603-d2899ee499af
+	github.com/retroblast-engine/tilesre v0.0.0-20241119171811-66222f445ba1
 	github.com/spf13/cobra v1.8.1
 	golang.org/x/text v0.19.0
 )
