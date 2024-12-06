@@ -49,6 +49,13 @@ func (s *baseScene) Init(assets embed.FS, mapFile, tiledPath, asepritePath strin
     for _, obj := range s.tiledMap.Objects {
         s.tiledMap.Space.Add(obj.Physics)
     }
+
+    // Make all interactive objects also solid ones
+	for _, o := range s.tiledMap.Space.Objects() {
+		if o.HasTags("interactive") {
+			o.AddTags("solid")
+		}
+	}
 }
 
 // Update updates the scene

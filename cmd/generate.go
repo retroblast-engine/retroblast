@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"io/fs"
@@ -455,6 +456,15 @@ func runGenerateCommand(_ *cobra.Command, _ []string) error { // nolint: gocyclo
 		return err
 	}
 
+	// BUG: Replace SolarLune's Resolve library from 0.8 down to 0.7.
+	// TODO: Make Retroblast work with 0.8
+	if err := updateGoMod("go.mod"); err != nil {
+		fmt.Printf("Error: %v\n", err)
+	}
+	if err := tidyGoModule(); err != nil { // tidy again... because of this bug.
+		return err
+	}
+
 	return nil
 }
 
@@ -479,6 +489,59 @@ func tidyGoModule() error {
 		return err
 	}
 	log.Println("Go module tidied.")
+	return nil
+}
+
+func updateGoMod(filePath string) error {
+	// Open the go.mod file
+	file, err := os.Open(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to open go.mod: %v", err)
+	}
+	defer file.Close() // nolint
+
+	// Read lines from the file
+	var lines []string
+	modified := false
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if strings.Contains(line, "github.com/solarlune/resolv v0.8.0") {
+			line = strings.Replace(line, "v0.8.0", "v0.7.0", 1)
+			modified = true
+		}
+		lines = append(lines, line)
+	}
+
+	if err := scanner.Err(); err != nil {
+		return fmt.Errorf("failed to read go.mod: %v", err)
+	}
+
+	// If no modifications, return early
+	if !modified {
+		fmt.Println("No changes made. The specified version was not found.")
+		return nil
+	}
+
+	// Write the updated lines back to the go.mod file
+	file, err = os.Create(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to write to go.mod: %v", err)
+	}
+	defer file.Close() // nolint
+
+	writer := bufio.NewWriter(file)
+	for _, line := range lines {
+		if _, err := writer.WriteString(line + "\n"); err != nil {
+			return fmt.Errorf("failed to write line to go.mod: %v", err)
+		}
+	}
+
+	if err := writer.Flush(); err != nil {
+		return fmt.Errorf("failed to flush changes to go.mod: %v", err)
+	}
+
+	fmt.Println("go.mod updated successfully.")
 	return nil
 }
 
