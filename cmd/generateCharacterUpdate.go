@@ -20,6 +20,7 @@ func generateCharacterUpdateGo(importPath, entityName string) string {
 	return fmt.Sprintf(`package %s
 
 import (
+    "math"
     "time"
 
     "%s/settings"
@@ -42,6 +43,8 @@ func (%s *%s) Update() {
     friction := 0.25
     accel := 0.25 + friction
     maxSpeed := 0.5
+    gravity := 0.75
+	%s.Speed.Y += gravity
 
     // Move left or right.
     if %s.direction == Right {
@@ -94,9 +97,26 @@ func (%s *%s) Update() {
         }
     }
 
+    // Vertical Movement
+    dy := %s.Speed.Y
+	dy = math.Max(math.Min(dy, settings.MaxCellSize), -settings.MaxCellSize)
+	checkDistance := dy
+	if dy >= 0 {
+		checkDistance++
+	}
+	if check := %s.Object.Check(0, checkDistance, "solid", "platform", "ramp"); check != nil {
+		if solids := check.ObjectsByTags("solid"); len(solids) > 0 {
+			dy = check.ContactWithObject(solids[0]).Y
+			%s.Speed.Y = 0
+		}
+	}
+
+	// Move the object on dy.
+	%s.Object.Position.Y += dy
+
     %s.Object.Update()
     %s.x = %s.Object.Position.X
     %s.y = %s.Object.Position.Y
 }
-`, lowerEntityName, importPath, lowerEntityName, receiver, titleEntityName, lowerEntityName, receiver, titleEntityName, receiver, lowerEntityName, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, lowerEntityName, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver)
+`, lowerEntityName, importPath, lowerEntityName, receiver, titleEntityName, lowerEntityName, receiver, titleEntityName, receiver, lowerEntityName, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, lowerEntityName, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver)
 }
