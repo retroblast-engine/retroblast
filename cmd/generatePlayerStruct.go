@@ -23,6 +23,7 @@ import (
     "fmt"
 
     "%s/settings"
+    "%s/audio"
     "github.com/hajimehoshi/ebiten/v2"
     "github.com/retroblast-engine/asevre"
     "github.com/solarlune/resolv"
@@ -30,18 +31,19 @@ import (
 
 // %s represents the %s entity.
 type %s struct {
-    x, y      float64
-    file      asevre.ASEFile
-    sprite    *ebiten.Image
-    state     State
-    animation *Animation
-    direction Direction
-    Object         *resolv.Object
-    Speed          resolv.Vector
-    OnGround       *resolv.Object
-    SlidingOnWall  *resolv.Object
-    FacingRight    bool
-    IgnorePlatform *resolv.Object
+    x, y            float64
+    file            asevre.ASEFile
+    sprite          *ebiten.Image
+    state           State
+    animation       *Animation
+    direction       Direction
+    Object          *resolv.Object
+    Speed           resolv.Vector
+    OnGround        *resolv.Object
+    SlidingOnWall   *resolv.Object
+    FacingRight     bool
+    IgnorePlatform  *resolv.Object
+    AudioHandler    *audio.AudioHandler
 }
 
 // New%s creates a new %s instance.
@@ -51,12 +53,18 @@ func New%s(x, y float64, file string) (*%s, error) {
         return nil, fmt.Errorf("failed to parse aseprite file: %%w", err)
     }
 
+    audioHandler, err := audio.InitAudioHandler("fantasy-8bit.mp3", audio.MP3)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create audio handler", err)
+	}
+
     %s := &%s{
         x:         x,
         y:         y,
         file:      aseprite,
         state:     %s,
         direction: Right,
+        AudioHandler: audioHandler,
     }
 
     // Initialize the animation for %s's state
@@ -75,5 +83,5 @@ func New%s(x, y float64, file string) (*%s, error) {
 func (%s *%s) GetObject() *resolv.Object {
     return %s.Object
 }
-`, lowerEntityName, importPath, titleEntityName, lowerEntityName, titleEntityName, titleEntityName, titleEntityName, titleEntityName, titleEntityName, receiver, titleEntityName, defaultState, lowerEntityName, receiver, receiver, receiver, receiver, receiver, receiver, lowerEntityName, receiver, receiver, receiver, receiver, receiver, titleEntityName, receiver)
+`, lowerEntityName, importPath, importPath, titleEntityName, lowerEntityName, titleEntityName, titleEntityName, titleEntityName, titleEntityName, titleEntityName, receiver, titleEntityName, defaultState, lowerEntityName, receiver, receiver, receiver, receiver, receiver, receiver, lowerEntityName, receiver, receiver, receiver, receiver, receiver, titleEntityName, receiver)
 }

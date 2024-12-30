@@ -49,6 +49,7 @@ func SetEmbeddedFiles(fs embed.FS) {
     Assets = fs
 }
 
+var AssetsAudioPath string = "assets/audio_tracks/"
 var AssetsTiledPath string = "assets/tiled/"
 var AssetsAsepritePath string = "assets/aseprite/"
 `, gameTitle, maxCellSize, minCellSize) + sceneVars.String()
