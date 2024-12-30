@@ -314,7 +314,7 @@ func runGenerateCommand(_ *cobra.Command, _ []string) error { // nolint: gocyclo
 		}
 	}
 	// ------------------------------------------------------------------------------------------------------------ //
-	// Generate eneities/entity.go
+	// Generate entities/entity.go
 	// ------------------------------------------------------------------------------------------------------------ //
 	entitiesDir := "entities"
 	if _, err := os.Stat(entitiesDir); os.IsNotExist(err) {
@@ -444,6 +444,23 @@ func runGenerateCommand(_ *cobra.Command, _ []string) error { // nolint: gocyclo
 		if err := os.WriteFile(updateGoFile, []byte(updateGoContent), 0644); err != nil {
 			log.Fatal(err)
 		}
+	}
+
+	// ------------------------------------------------------------------------------------------------------------ //
+	// Generate audio/audio.go
+	// ------------------------------------------------------------------------------------------------------------ //
+
+	audioDir := "audio"
+	if _, err := os.Stat(audioDir); os.IsNotExist(err) {
+		if err := os.Mkdir(audioDir, 0755); err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	audioGoFile := filepath.Join(audioDir, "audio.go")
+	audioGoContent := generateAudioGo(importPath)
+	if err := os.WriteFile(audioGoFile, []byte(audioGoContent), 0644); err != nil {
+		log.Fatal(err)
 	}
 
 	// ------------------------------------------------------------------------------------------------------------ //

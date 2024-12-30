@@ -48,6 +48,8 @@ func (%s *%s) handleInput() {
 func (%s *%s) Update() {
     %s.handleInput()
 
+    %s.updateAudio()
+
     friction := 0.5
     accel := 0.5 + friction
     maxSpeed := 4.0
@@ -318,5 +320,17 @@ func (%s *%s) GetX() float64 {
 func (%s *%s) GetY() float64 {
     return %s.y
 }
-`, lowerEntityName, importPath, lowerEntityName, receiver, titleEntityName, receiver, receiver, receiver, receiver, receiver, lowerEntityName, receiver, titleEntityName, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, titleEntityName, receiver, receiver, titleEntityName, receiver)
+
+func (%s *%s) updateAudio() {
+	if ebiten.IsKeyPressed(ebiten.KeyP) {
+		%s.AudioHandler.VolumeUp()
+	}
+
+	if ebiten.IsKeyPressed(ebiten.KeyO) {
+		%s.AudioHandler.VolumeDown()
+	}
+
+}
+
+`, lowerEntityName, importPath, lowerEntityName, receiver, titleEntityName, receiver, receiver, receiver, receiver, receiver, lowerEntityName, receiver, titleEntityName, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, receiver, titleEntityName, receiver, receiver, titleEntityName, receiver, receiver, titleEntityName, receiver, receiver)
 }
