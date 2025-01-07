@@ -3,17 +3,13 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"os/exec"
-	"runtime"
+	"path/filepath"
 	"strings"
 )
 
 // getRepoURL retrieves the repository URL from the Git configuration
 func getRepoURL() (string, error) {
-
-	var cmd *exec.Cmd
 	var err error
-	var output []byte
 
 	// Get the GOPATH from the environment variable
 	goPath := os.Getenv("GOPATH")
@@ -21,30 +17,26 @@ func getRepoURL() (string, error) {
 		return "", fmt.Errorf("GOPATH is not set")
 	}
 
-	// Check the operating system
-	if runtime.GOOS == "windows" {
-		cmd = exec.Command("powershell", "-Command", fmt.Sprintf("$pwd = Get-Location; $pwd.Path -split \"%s\" | Select-Object -Index 1", "/"))
-	} else if runtime.GOOS == "linux" {
-		cmd = exec.Command("sh", "-c", fmt.Sprintf("pwd | awk -F \"%s\" '{print $2}'", "/"))
-	} else {
-		fmt.Println("Unsupported OS")
-		return "", fmt.Errorf("unsupported OS")
-	}
-
-	output, err = cmd.Output()
-
-	fmt.Println(output)
-
+	// Retrieves the current working directory directly, ensuring compatibility across platforms.
+	currentDir, err := os.Getwd()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to get current directory: %w", err)
 	}
 
-	path := string(output)
-	index := strings.Index(path, "github.com")
+	// Ensure the current directory is under GOPATH/src
+	if !strings.HasPrefix(currentDir, filepath.Join(goPath, "src")) {
+		return "", fmt.Errorf("current directory is not under GOPATH/src")
+	}
+
+	// Extract the path relative to GOPATH/src
+	relativePath := strings.TrimPrefix(currentDir, filepath.Join(goPath, "src")+string(os.PathSeparator))
+
+	// Find the "github.com" segment in the path
+	index := strings.Index(relativePath, "github.com")
 	if index == -1 {
 		return "", fmt.Errorf("no valid repository URL found")
 	}
-	path = path[index:]
 
-	return path, nil
+	// Return the repository path starting from "github.com"
+	return relativePath[index:], nil
 }
