@@ -3,12 +3,13 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
 // getRepoURL retrieves the repository URL from the Git configuration
 func getRepoURL() (string, error) {
+	var err error
 
 	// Get the GOPATH from the environment variable
 	goPath := os.Getenv("GOPATH")
@@ -16,19 +17,26 @@ func getRepoURL() (string, error) {
 		return "", fmt.Errorf("GOPATH is not set")
 	}
 
-	cmd := exec.Command("sh", "-c", "pwd | awk -F "+goPath+" '{print $2}'")
-	output, err := cmd.Output()
-
+	// Retrieves the current working directory directly, ensuring compatibility across platforms.
+	currentDir, err := os.Getwd()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to get current directory: %w", err)
 	}
 
-	path := string(output)
-	index := strings.Index(path, "github.com")
+	// Ensure the current directory is under GOPATH/src
+	if !strings.HasPrefix(currentDir, filepath.Join(goPath, "src")) {
+		return "", fmt.Errorf("current directory is not under GOPATH/src")
+	}
+
+	// Extract the path relative to GOPATH/src
+	relativePath := strings.TrimPrefix(currentDir, filepath.Join(goPath, "src")+string(os.PathSeparator))
+
+	// Find the "github.com" segment in the path
+	index := strings.Index(relativePath, "github.com")
 	if index == -1 {
 		return "", fmt.Errorf("no valid repository URL found")
 	}
-	path = path[index:]
 
-	return path, nil
+	// Return the repository path starting from "github.com"
+	return relativePath[index:], nil
 }
