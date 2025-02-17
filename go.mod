@@ -5,7 +5,7 @@ go 1.22.4
 require (
 	github.com/retroblast-engine/asevre v0.0.0-20240906013955-7261674eefed
 	github.com/retroblast-engine/tilesre v0.0.0-20241206134452-5d9ee6a26630
-	github.com/spf13/cobra v1.8.1
+	github.com/spf13/cobra v1.9.1
 	golang.org/x/text v0.19.0
 )
 
@@ -18,7 +18,7 @@ require (
 	github.com/jezek/xgb v1.1.1 // indirect
 	github.com/lafriks/go-tiled v0.13.0 // indirect
 	github.com/solarlune/resolv v0.7.0 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/pflag v1.0.6 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.20.0 // indirect
 )
